@@ -14,6 +14,7 @@ const POSTGRES_PORT = parseInt(process.env.POSTGRES_PORT)
 const POSTGRES_USER = process.env.POSTGRES_USER
 const POSTGRES_PASSWORD = process.env.POSTGRES_PASSWORD
 const POSTGRES_DATABASE = process.env.POSTGRES_DATABASE;
+const POSTGRES_SCHEMA = process.env.POSTGRES_SCHEMA;
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ const POSTGRES_DATABASE = process.env.POSTGRES_DATABASE;
       username: POSTGRES_USER,
       password: POSTGRES_PASSWORD,
       database: POSTGRES_DATABASE,
+      schema: POSTGRES_SCHEMA,
       entities: [User, Event],
       synchronize: true,
       logging: true
