@@ -26,7 +26,7 @@ const POSTGRES_DATABASE = process.env.POSTGRES_DATABASE;
       database: POSTGRES_DATABASE,
       entities: [User, Event],
       synchronize: true,
-      logging: false
+      logging: true
     }),
       UsersModule, EventsModule, DatabaseModule
   ],
