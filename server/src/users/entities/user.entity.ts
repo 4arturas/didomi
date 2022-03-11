@@ -1,6 +1,6 @@
 import { ApiHideProperty } from '@nestjs/swagger';
 import {Event} from "../../events/entities/event.entity";
-import {Column, Entity, OneToMany, PrimaryColumn, PrimaryGeneratedColumn} from "typeorm";
+import {Column, Entity, OneToMany, PrimaryColumn, PrimaryGeneratedColumn, Unique} from "typeorm";
 
 @Entity()
 export class User {
@@ -8,16 +8,10 @@ export class User {
     @PrimaryGeneratedColumn("uuid")
     id: string;
 
-    @Column({nullable: false})
+    @Column({ unique: true })
     email: string;
 
-    // @ApiHideProperty()
-    // password: string;
-    // name?: string | null;
-
-    @OneToMany(type => Event, event => event.user)
+    @OneToMany(type => Event, event => event.user, {eager:true, cascade: true})
     consents: Event[];
 
-    // @HasMany(() => Event)
-    // photos: Event[];
 }
