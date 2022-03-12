@@ -9,6 +9,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     logger: ['log', 'error', 'warn', 'debug', 'verbose'],
   });
+  app.enableCors();
 
   const config = new DocumentBuilder()
       .setTitle('Didomi example')
