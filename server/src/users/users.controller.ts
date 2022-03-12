@@ -12,8 +12,12 @@ export class UsersController {
 
   @Post()
   @ApiResponse({
-    status: 200,
-    description: 'User was successfully added'
+    status: HttpStatus.OK,
+    description: 'User was successfully added.'
+  })
+  @ApiResponse({
+    status: HttpStatus.UNPROCESSABLE_ENTITY,
+    description: 'User can not be added.'
   })
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto)
@@ -23,7 +27,7 @@ export class UsersController {
         .catch(e => {
           throw new HttpException({
             status: HttpStatus.UNPROCESSABLE_ENTITY,
-            error: 'User can not be added',
+            error: 'User can not be added.',
           }, HttpStatus.UNPROCESSABLE_ENTITY);
         });
   }
