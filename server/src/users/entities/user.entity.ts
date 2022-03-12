@@ -11,6 +11,12 @@ export class User {
     @Column({ unique: true })
     email: string;
 
+    @Column()
+    firstName: string;
+
+    @Column()
+    lastName: string;
+
     @OneToMany(type => Event, event => event.user, {eager:true, cascade: true})
     consents: Event[];
 

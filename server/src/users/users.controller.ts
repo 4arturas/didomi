@@ -18,7 +18,8 @@ export class UsersController {
   @Get()
   @ApiResponse({
     status: 200,
-    description: 'Users has been successfully fetched'
+    description: 'Users has been successfully fetched',
+    type: [ReturnUserDto],
   })
   findAll() {
     return this.usersService.findAll();
@@ -33,7 +34,8 @@ export class UsersController {
   })
   @ApiResponse({
     status: 404,
-    description: 'A user with given id does not exist.'
+    description: 'A user with given id does not exist.',
+    type: ReturnUserDto
   })
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(id);
