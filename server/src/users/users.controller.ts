@@ -2,6 +2,9 @@
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+  import {ApiParam, ApiResponse} from "@nestjs/swagger";
+  import {User} from "./entities/user.entity";
+  import {ReturnUserDto} from "./dto/return-user.dto";
 
 @Controller('users')
 export class UsersController {
@@ -13,11 +16,25 @@ export class UsersController {
   }
 
   @Get()
+  @ApiResponse({
+    status: 200,
+    description: 'Users has been successfully fetched'
+  })
   findAll() {
     return this.usersService.findAll();
   }
 
   @Get(':id')
+  @ApiParam({
+    name: 'id',
+    required: true,
+    description: 'Should be an id of a user that exists in the database',
+    type: String
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'A user with given id does not exist.'
+  })
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(id);
   }
