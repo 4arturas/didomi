@@ -11,8 +11,8 @@ import TableRow from '@mui/material/TableRow';
 import TableSortLabel from '@mui/material/TableSortLabel';
 import Paper from '@mui/material/Paper';
 import { visuallyHidden } from '@mui/utils';
-import {DefaultService, OpenAPI, ReturnUserDto} from "../services/openapi";
-import {useCallback, useEffect} from "react";
+import {ApiError, DefaultService, OpenAPI, ReturnUserDto} from "../services/openapi";
+import {useCallback, useEffect, useState} from "react";
 import useApi from "../hooks/useApi";
 // import moment from "moment";
 
@@ -116,6 +116,9 @@ EnhancedTableHead.propTypes = {
 };
 
 function EnhancedTable() {
+    const [error, setError] = useState<ApiError | undefined>(undefined);
+    const [isLoading, setIsloading] = useState<boolean>(true);
+
     const [rows, setRows] = React.useState<ReturnUserDto[]>([]);
     const [order, setOrder] = React.useState('asc');
     const [orderBy, setOrderBy] = React.useState('email');
@@ -146,15 +149,15 @@ function EnhancedTable() {
 
     const handleRequest = useCallback(async function <T>(request: Promise<T>) {
 
-        // setIsloading(true)
+        setIsloading(true);
         try {
-            const response = await request
-            // setError(undefined)
-            return response
+            const response = await request;
+            setError(undefined)
+            return response;
         } catch (error: any) {
-            // setError(error)
+            setError(error);
         } finally {
-            // setIsloading(true)
+            setIsloading(true);
         }
     }, []);
 
