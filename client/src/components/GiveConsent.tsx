@@ -1,6 +1,6 @@
 function GiveConsent() {
     return (
-        <div>GiveConsent</div>
+        <div><h1>Give Consent</h1></div>
     );
 }
 
