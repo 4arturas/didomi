@@ -1,5 +1,9 @@
 # Didomi
 
+```bash
+npm install sqlite3 --save
+````
+
 ## Run backend
 ```bash
 npm run start:dev
