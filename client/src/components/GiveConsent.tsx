@@ -1,13 +1,16 @@
 import {ApiError, CreateUserDto, DefaultService, OpenAPI} from "../services/openapi";
 import {useCallback, useState} from "react";
 import {SubmitHandler, useController, UseControllerProps, useForm} from "react-hook-form";
-import {TextField} from "@mui/material";
+import {Checkbox, FormControlLabel, FormGroup, TextField} from "@mui/material";
 import * as React from "react";
+import {ConsentsEnum} from "./ConsentsEnum";
 
 type FormValues = {
     FirstName: string;
     LastName: string;
     Email: string;
+    email_notifications: boolean;
+    sms_notifications: boolean;
 };
 
 function Input(props: UseControllerProps<FormValues>) {
@@ -25,7 +28,7 @@ function GiveConsent() {
 
     const { handleSubmit, control, formState: { errors } } = useForm<FormValues>({
         defaultValues: {
-            FirstName: "John", LastName: "Doe", Email: "test@test.com"
+            FirstName: "John", LastName: "Doe", Email: "test@test.com", email_notifications: false, sms_notifications: false
         },
         mode: "onChange"
     });
@@ -49,8 +52,17 @@ function GiveConsent() {
 
     const onSubmit = (data: FormValues) => {
         OpenAPI.BASE = 'http://localhost:4000';
-        // console.log(data);
-        const user:CreateUserDto = {email:data.Email, firstName: data.FirstName, lastName: data.LastName, consents: []};
+
+        const user:CreateUserDto = {
+            email:data.Email,
+            firstName: data.FirstName,
+            lastName: data.LastName,
+            consents: [
+                JSON.parse(`{"id":"email_notifications", "enabled": ${data.email_notifications}}`),
+                JSON.parse(`{"id":"sms_notifications", "enabled": ${data.sms_notifications}}`)
+            ]
+        };
+
         handleRequest(DefaultService.usersControllerCreate(user))
             .then( (u: any) => {
                 console.log( u );
@@ -69,7 +81,13 @@ function GiveConsent() {
                 {errors.LastName && <span>This field is required</span>}
                 <Input control={control} name="Email" rules={{ required: true }} />
                 {errors.Email && <span>This field is required</span>}
+                <br/>
                 I agree to:
+                <br/>
+                <FormGroup>
+                    <FormControlLabel control={<Checkbox defaultChecked />} label={ConsentsEnum.email_notifications} value="email_notifications" />
+                    <FormControlLabel control={<Checkbox />} label={ConsentsEnum.sms_notifications}  value="sms_notifications" />
+                </FormGroup>
                 <br/>
                 <input type="submit" />
                 <br/><br/>
