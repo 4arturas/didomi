@@ -13,7 +13,7 @@ import Paper from '@mui/material/Paper';
 import { visuallyHidden } from '@mui/utils';
 import {ApiError, DefaultService, OpenAPI, ReturnUserDto} from "../services/openapi";
 import {useCallback, useEffect, useState} from "react";
-import useApi from "../hooks/useApi";
+import EditIcon from '@mui/icons-material/Edit';
 import {ConsentsEnum} from "./ConsentsEnum";
 // import moment from "moment";
 
@@ -68,6 +68,10 @@ const headCells = [
         id: 'consents',
         numeric: false,
         label: 'Consent is given for',
+    },
+    {
+        id: 'edit',
+        label: 'Edit',
     },
 ];
 
@@ -200,6 +204,10 @@ function EnhancedTable() {
                                                 {row.consents.map( (e:any, index:number) =>
                                                     <div key={e.entityId}>{ e.enabled? `${ConsentsEnum[e.id]} ` : '' }</div>)
                                                 }
+                                            </TableCell>
+                                            <TableCell>
+                                                <EditIcon
+                                                onClick={()=> { alert(1); }}/>
                                             </TableCell>
                                         </TableRow>
                                     );
