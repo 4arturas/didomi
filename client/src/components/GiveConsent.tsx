@@ -1,4 +1,4 @@
-import {ApiError, CreateUserDto, DefaultService, OpenAPI} from "../services/openapi";
+import {ApiError, CreateUserDto, DefaultService, OpenAPI, ReturnUserDto} from "../services/openapi";
 import {useCallback, useState} from "react";
 import {SubmitHandler, useController, UseControllerProps, Controller, useForm} from "react-hook-form";
 import {Alert, Button, Checkbox, CircularProgress, FormControlLabel, TextField} from "@mui/material";
@@ -28,7 +28,7 @@ function GiveConsent() {
 
     const { handleSubmit, control, formState: { errors } } = useForm<FormValues>({
         defaultValues: {
-            // FirstName: "John", LastName: "Doe", Email: "test@test.com"
+            FirstName: "John", LastName: "Doe", Email: "test@test.com"
         },
         mode: "onChange"
     });
@@ -64,8 +64,8 @@ function GiveConsent() {
         };
 
         handleRequest(DefaultService.usersControllerCreate(user))
-            .then( (u: any) => {
-                console.log( u );
+            .then( (newUser: ReturnUserDto) => {
+                // console.log( 'ReturnUserDto', newUser );
             } );
 
     }
