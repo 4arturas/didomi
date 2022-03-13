@@ -14,6 +14,7 @@ import { visuallyHidden } from '@mui/utils';
 import {ApiError, DefaultService, OpenAPI, ReturnUserDto} from "../services/openapi";
 import {useCallback, useEffect, useState} from "react";
 import useApi from "../hooks/useApi";
+import {ConsentsEnum} from "./ConsentsEnum";
 // import moment from "moment";
 
 
@@ -193,18 +194,13 @@ function EnhancedTable() {
                                         <TableRow hover key={row.id}>
                                             <TableCell>
                                             </TableCell>
-                                            {/*<TableCell*/}
-                                            {/*    component="th"*/}
-                                            {/*    id={labelId}*/}
-                                            {/*    scope="row"*/}
-                                            {/*    padding="none"*/}
-                                            {/*>*/}
-                                            {/*    {row.id}*/}
-                                            {/*</TableCell>*/}
-                                            {/*<TableCell align="left">{moment(row.created_time).format(`YYYY-MM-DD HH:mm:ss`)}</TableCell>*/}
                                             <TableCell align="left">{row.firstName} {row.lastName}</TableCell>
                                             <TableCell align="left">{row.email}</TableCell>
-                                            <TableCell align="left">{row.consents.map( (e:any, index:number) => <span key={index}>{e.id}</span>)}</TableCell>
+                                            <TableCell align="left">
+                                                {row.consents.map( (e:any, index:number) =>
+                                                    <div key={e.entityId}>{ e.enabled? `${ConsentsEnum[e.id]} ` : '' }</div>)
+                                                }
+                                            </TableCell>
                                         </TableRow>
                                     );
                                 })}
