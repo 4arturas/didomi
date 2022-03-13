@@ -35,7 +35,7 @@ export class UsersController {
   @Get()
   @ApiResponse({
     status: 200,
-    description: 'Users has been successfully fetched',
+    description: 'Users have been successfully fetched',
     type: [ReturnUserDto],
   })
   findAll() {
@@ -50,9 +50,13 @@ export class UsersController {
     type: String
   })
   @ApiResponse({
-    status: 404,
-    description: 'A user with given id does not exist.',
+    status: HttpStatus.OK,
+    description: 'User has been successfully fetched',
     type: ReturnUserDto
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'A user with given id does not exist.',
   })
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(id);
