@@ -1,5 +1,5 @@
 
 export enum ConsentsEnum {
-    email_notifications = "Email notifications",
-    sms_notifications = "SMS notifications"
+    email_notifications = <any>"Email notifications",
+    sms_notifications = <any>"SMS notifications"
 }
