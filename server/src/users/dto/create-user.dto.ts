@@ -21,7 +21,7 @@ export class CreateUserDto {
     @MaxLength(50)
     lastName: string;
 
-    @ApiProperty({ example: 'either \'sms_notifications\' or \'email_notifications\'', description: 'Consents' })
+    @ApiProperty({ example: '[{"id": "email_notifications","enabled": true},{"id": "sms_notifications","enabled": false}]', description: 'Consents given by user' })
     consents: Event[]
 
 }
