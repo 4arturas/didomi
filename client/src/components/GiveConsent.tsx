@@ -1,7 +1,7 @@
 import {ApiError, CreateUserDto, DefaultService, OpenAPI} from "../services/openapi";
 import {useCallback, useState} from "react";
-import {SubmitHandler, useController, UseControllerProps, useForm} from "react-hook-form";
-import {Checkbox, FormControlLabel, FormGroup, TextField} from "@mui/material";
+import {SubmitHandler, useController, UseControllerProps, Controller, useForm} from "react-hook-form";
+import {Alert, Button, Checkbox, CircularProgress, FormControlLabel, TextField} from "@mui/material";
 import * as React from "react";
 import {ConsentsEnum} from "./ConsentsEnum";
 
@@ -9,8 +9,8 @@ type FormValues = {
     FirstName: string;
     LastName: string;
     Email: string;
-    email_notifications: boolean;
-    sms_notifications: boolean;
+    EmailNotifications: boolean;
+    SmsNotifications: boolean;
 };
 
 function Input(props: UseControllerProps<FormValues>) {
@@ -18,7 +18,7 @@ function Input(props: UseControllerProps<FormValues>) {
 
     return (
         <div>
-            <TextField {...field} placeholder={props.name} />
+            <TextField {...field} placeholder={props.name} variant="outlined" label={field.name}/>
             {/*<p>{fieldState.error && "error"}</p>*/}
         </div>
     );
@@ -28,7 +28,7 @@ function GiveConsent() {
 
     const { handleSubmit, control, formState: { errors } } = useForm<FormValues>({
         defaultValues: {
-            FirstName: "John", LastName: "Doe", Email: "test@test.com", email_notifications: false, sms_notifications: false
+            // FirstName: "John", LastName: "Doe", Email: "test@test.com"
         },
         mode: "onChange"
     });
@@ -58,8 +58,8 @@ function GiveConsent() {
             firstName: data.FirstName,
             lastName: data.LastName,
             consents: [
-                JSON.parse(`{"id":"email_notifications", "enabled": ${data.email_notifications}}`),
-                JSON.parse(`{"id":"sms_notifications", "enabled": ${data.sms_notifications}}`)
+                JSON.parse(`{"id":"${Object.keys(ConsentsEnum)[Object.values(ConsentsEnum).indexOf(ConsentsEnum.email_notifications)]}", "enabled": ${data.EmailNotifications}}`),
+                JSON.parse(`{"id":"${Object.keys(ConsentsEnum)[Object.values(ConsentsEnum).indexOf(ConsentsEnum.sms_notifications)]}", "enabled": ${data.SmsNotifications}}`)
             ]
         };
 
@@ -76,29 +76,45 @@ function GiveConsent() {
             <h1>Give Consent</h1>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Input control={control} name="FirstName" rules={{ required: true }} />
-                {errors.FirstName && <span>This field is required</span>}
-                <Input control={control} name="LastName" rules={{ required: true }} />
-                {errors.LastName && <span>This field is required</span>}
-                <Input control={control} name="Email" rules={{ required: true }} />
-                {errors.Email && <span>This field is required</span>}
+                {errors.FirstName && <Alert severity="error" style={{width:"170px"}}>This field is required</Alert>}
                 <br/>
+                <Input control={control} name="LastName" rules={{ required: true }} />
+                {errors.LastName && <Alert severity="error" style={{width:"170px"}}>This field is required</Alert>}
+                <br/>
+                <Input control={control} name="Email" rules={{ required: true }} />
+                {errors.Email && <Alert severity="error" style={{width:"170px"}}>This field is required</Alert>}
+                <br/>
+
                 I agree to:
                 <br/>
-                <FormGroup>
-                    <FormControlLabel control={<Checkbox defaultChecked />} label={ConsentsEnum.email_notifications} value="email_notifications" />
-                    <FormControlLabel control={<Checkbox />} label={ConsentsEnum.sms_notifications}  value="sms_notifications" />
-                </FormGroup>
+
+                <Controller
+                    name="EmailNotifications"
+                    control={control}
+                    defaultValue={false}
+                    rules={{ required: false }}
+                    render={({ field }) =>
+                        <FormControlLabel control={<Checkbox {...field} />} label={ConsentsEnum.email_notifications}  value={Object.keys(ConsentsEnum)[Object.values(ConsentsEnum).indexOf(ConsentsEnum.email_notifications)]} />
+
+                    }
+                />
                 <br/>
-                <input type="submit" />
+                <Controller
+                    name="SmsNotifications"
+                    control={control}
+                    defaultValue={false}
+                    rules={{ required: false }}
+                    render={({ field }) =>
+                        <FormControlLabel control={<Checkbox {...field}/>} label={ConsentsEnum.sms_notifications}  value={Object.keys(ConsentsEnum)[Object.values(ConsentsEnum).indexOf(ConsentsEnum.sms_notifications)]} />
+                    }
+                />
+                <br/>
+                <br/>
+                {isLoading ? <Button type="submit" variant="outlined">Submit</Button> : <CircularProgress />}
                 <br/><br/>
-                <div style={{color:'red'}}>
-                {
-                    error &&
-                    error.body.message ?
-                        error.body.message.map( (m:string) => <div>{m}</div>) :
-                        <div>{error?.message}</div>
-                }
-                </div>
+                {error?.message ? <div><Alert severity="error">{error?.message}</Alert><br/></div> : <></>}
+                {error?.body.message ? error.body.message.map( (m:string) => <div><Alert severity="error">{m}</Alert></div>) : <></>}
+
             </form>
         </div>
     );
