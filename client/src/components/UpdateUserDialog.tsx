@@ -13,6 +13,9 @@ import {Checkbox, FormControlLabel, FormGroup} from "@mui/material";
 import {ConsentsEnum} from "./ConsentsEnum";
 
 const UpdateUserDialog = (props:any)  => {
+
+    const [emailEntityId, setEmailEntityId] = React.useState<string>("");
+    const [smsEntityId, setSmsEntityId] = React.useState<string>("");
     const [emailNotifications, setEmailNotifications] = React.useState<boolean>(false);
     const [smsNotifications, setSmsNotifications] = React.useState<boolean>(false);
 
@@ -30,28 +33,26 @@ const UpdateUserDialog = (props:any)  => {
 
     const handleDelete = () => {
         setOpen(false);
-        const ee: any = {eventId:'3c2d1d92-8b44-4cdc-9940-9770eed3289', enabled:true}
-
-        DefaultService.eventsControllerUpdate(ee.eventId, ee);
-
-        // props.user.consents.forEach( (e:UpdateEventDto,index:number) => {
-        //     console.log( e );
-        //     e.enabled = (e.id === Object.keys(ConsentsEnum)[Object.values(ConsentsEnum).indexOf(ConsentsEnum.email_notifications)]) ? emailNotifications : smsNotifications;
-        //     DefaultService.eventsControllerUpdate(e.eventId, e);
-        // } );
-        // window.location.href = '/consents'
-        // DefaultService.eventsControllerUpdate(id, )
-        // DefaultService.usersControllerRemove(props.id)
-        //     .then( (u: any) => window.location.href = '/consents' );
+        const email:UpdateEventDto = {eventId:emailEntityId, enabled:emailNotifications};
+        const sms:UpdateEventDto = {eventId:smsEntityId, enabled:smsNotifications};
+        DefaultService.eventsControllerUpdate(emailEntityId, email);
+        DefaultService.eventsControllerUpdate(smsEntityId, sms);
+        window.location.href = '/consents';
     };
 
     React.useEffect( () => {
         for (let i = 0; i < props.user.consents.length; i++) {
-            const e:CreateEventDto = props.user.consents[i];
+            const e:any = props.user.consents[i];
             if (e.id === Object.keys(ConsentsEnum)[Object.values(ConsentsEnum).indexOf(ConsentsEnum.email_notifications)])
+            {
+                setEmailEntityId(e.entityId);
                 setEmailNotifications(e.enabled);
+            }
             else
+            {
+                setSmsEntityId(e.entityId);
                 setSmsNotifications(e.enabled);
+            }
         }
     }, []);
 
@@ -74,8 +75,18 @@ const UpdateUserDialog = (props:any)  => {
                         Email: {props.user.email}
                         <br/>
                         <FormGroup>
-                            <FormControlLabel control={<Checkbox checked={emailNotifications} onClick={()=>setEmailNotifications(!emailNotifications)}/>} label={ConsentsEnum.email_notifications}  value={Object.keys(ConsentsEnum)[Object.values(ConsentsEnum).indexOf(ConsentsEnum.email_notifications)]} />
-                            <FormControlLabel control={<Checkbox checked={smsNotifications}/>} onClick={()=>setSmsNotifications(!smsNotifications)} label={ConsentsEnum.sms_notifications}  value={Object.keys(ConsentsEnum)[Object.values(ConsentsEnum).indexOf(ConsentsEnum.sms_notifications)]} />
+                            <FormControlLabel
+                                control={<Checkbox checked={emailNotifications} onClick={()=> {
+                                    setEmailNotifications(!emailNotifications);
+                                }
+                                }/>}
+                                label={ConsentsEnum.email_notifications} value={Object.keys(ConsentsEnum)[Object.values(ConsentsEnum).indexOf(ConsentsEnum.email_notifications)]} />
+                            <FormControlLabel
+                                control={<Checkbox checked={smsNotifications} onClick={()=> {
+                                    setSmsNotifications(!smsNotifications);
+                                }
+                                }/>} label={ConsentsEnum.sms_notifications}
+                                value={Object.keys(ConsentsEnum)[Object.values(ConsentsEnum).indexOf(ConsentsEnum.sms_notifications)]} />
                         </FormGroup>
                     </DialogContentText>
                 </DialogContent>
