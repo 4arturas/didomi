@@ -66,6 +66,7 @@ function GiveConsent() {
         handleRequest(DefaultService.usersControllerCreate(user))
             .then( (newUser: ReturnUserDto) => {
                 // console.log( 'ReturnUserDto', newUser );
+                window.location.href = '/consents'
             } );
 
     }
