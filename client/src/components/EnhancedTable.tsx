@@ -14,6 +14,7 @@ import { visuallyHidden } from '@mui/utils';
 import {ApiError, DefaultService, OpenAPI, ReturnUserDto} from "../services/openapi";
 import {useCallback, useEffect, useState} from "react";
 import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 import {ConsentsEnum} from "./ConsentsEnum";
 // import moment from "moment";
 
@@ -206,8 +207,13 @@ function EnhancedTable() {
                                                 }
                                             </TableCell>
                                             <TableCell>
-                                                <EditIcon
+                                                <EditIcon style={{cursor:"pointer"}}
                                                 onClick={()=> { alert(1); }}/>
+                                                <DeleteIcon style={{cursor:"pointer"}}
+                                                    onClick={()=> {
+                                                        handleRequest(DefaultService.usersControllerRemove(row.id)
+                                                            .then( (u: any) => window.location.href = '/consents' ) );
+                                                    }}/>
                                             </TableCell>
                                         </TableRow>
                                     );
