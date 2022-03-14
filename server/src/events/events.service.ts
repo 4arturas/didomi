@@ -28,8 +28,8 @@ export class EventsService {
     return `This action returns a #${id} event`;
   }
 
-  update(id: number, updateEventDto: UpdateEventDto) {
-    return `This action updates a #${id} event`;
+  update(eventId: string, updateEventDto: UpdateEventDto) {
+    return this.eventsRepository.update(updateEventDto.eventId, {enabled:updateEventDto.enabled});
   }
 
   remove(id: number) {
