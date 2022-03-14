@@ -1,5 +1,4 @@
-import {ApiError, CreateUserDto, DefaultService, OpenAPI} from "../services/openapi";
-import useApi from "../hooks/useApi";
+import {OpenAPI} from "../services/openapi";
 import {useCallback, useEffect, useState} from "react";
 import EnhancedTable from "./EnhancedTable";
 
