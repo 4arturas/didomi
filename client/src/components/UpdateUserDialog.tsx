@@ -7,7 +7,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
-import {CreateEventDto, DefaultService, UpdateEventDto} from "../services/openapi";
+import {DefaultService, UpdateEventDto} from "../services/openapi";
 import EditIcon from "@mui/icons-material/Edit";
 import {Checkbox, FormControlLabel, FormGroup} from "@mui/material";
 import {ConsentsEnum} from "./ConsentsEnum";
@@ -43,13 +43,11 @@ const UpdateUserDialog = (props:any)  => {
     React.useEffect( () => {
         for (let i = 0; i < props.user.consents.length; i++) {
             const e:any = props.user.consents[i];
-            if (e.id === Object.keys(ConsentsEnum)[Object.values(ConsentsEnum).indexOf(ConsentsEnum.email_notifications)])
-            {
+            if (e.id === Object.keys(ConsentsEnum)[Object.values(ConsentsEnum).indexOf(ConsentsEnum.email_notifications)]) {
                 setEmailEntityId(e.entityId);
                 setEmailNotifications(e.enabled);
             }
-            else
-            {
+            else {
                 setSmsEntityId(e.entityId);
                 setSmsNotifications(e.enabled);
             }
