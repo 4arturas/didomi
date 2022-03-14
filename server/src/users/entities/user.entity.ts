@@ -17,7 +17,7 @@ export class User {
     @Column()
     lastName: string;
 
-    @OneToMany(type => Event, event => event.user, {eager:true, cascade: ["remove"]})
+    @OneToMany(type => Event, event => event.user, {eager:true, cascade: true})
     consents: Event[];
 
 }
