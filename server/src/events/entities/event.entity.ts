@@ -15,7 +15,7 @@ export class Event {
     @Column()
     enabled: boolean
 
-    @ManyToOne(() => User, (User) => User.email)
+    @ManyToOne(() => User, (User) => User.email )
     @JoinColumn({name: 'userId'})
     user: User;
 
