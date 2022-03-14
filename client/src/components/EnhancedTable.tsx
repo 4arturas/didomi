@@ -13,10 +13,9 @@ import Paper from '@mui/material/Paper';
 import { visuallyHidden } from '@mui/utils';
 import {ApiError, DefaultService, OpenAPI, ReturnUserDto} from "../services/openapi";
 import {useCallback, useEffect, useState} from "react";
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
 import {ConsentsEnum} from "./ConsentsEnum";
 import {DeleteUserDialog} from "./DeleteUserDialog";
+import UpdateUserDialog from "./UpdateUserDialog";
 
 
 function descendingComparator(a:any, b:any, orderBy:any) {
@@ -207,8 +206,7 @@ function EnhancedTable() {
                                                 }
                                             </TableCell>
                                             <TableCell>
-                                                <EditIcon style={{cursor:"pointer"}}
-                                                onClick={()=> { alert(1); }}/>
+                                                <UpdateUserDialog user={row}/>
                                                 <DeleteUserDialog id={row.id} firstName={row.firstName} lastName={row.lastName} email={row.email}/>
                                             </TableCell>
                                         </TableRow>
